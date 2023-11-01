@@ -1,5 +1,6 @@
 package com.frostybee.moneybag;
 
+import java.io.File;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
@@ -13,6 +14,9 @@ import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  *
@@ -22,25 +26,27 @@ public final class MoneyBagApp extends Stage {
 
     private int score = 0;
     private long lastNanoTime = System.nanoTime();
+    private AudioClip coinClip;
 
-    public MoneyBagApp() {
+    public MoneyBagApp() {        
         initUIComponents();
     }
 
     public void initUIComponents() {
 
+        //-- Set up the stage and the scene graph. 
         this.setTitle("Collect the Money Bags!");
         setAlwaysOnTop(true);
-
         Group root = new Group();
         Scene scene = new Scene(root);
         this.setScene(scene);
-
         Canvas canvas = new Canvas(512, 512);
         root.getChildren().add(canvas);
 
+        //-- Create and configure the media player.                
+        coinClip = new AudioClip(getClass().getResource("/sounds/picked-coin.wav").toExternalForm());                
+        
         List<String> input = new ArrayList<>();
-
         scene.setOnKeyPressed((KeyEvent e) -> {
             String code = e.getCode().toString();
             if (!input.contains(code)) {
@@ -106,6 +112,7 @@ public final class MoneyBagApp extends Stage {
                     Sprite moneybag = moneybagIter.next();
                     if (briefcase.intersects(moneybag)) {
                         moneybagIter.remove();
+                        coinClip.play();
                         score++;
                     }
                 }
