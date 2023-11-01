@@ -68,8 +68,7 @@ public final class MoneyBagApp extends Stage {
         List<Sprite> moneybagList = new ArrayList<>();
 
         for (int i = 0; i < 15; i++) {
-            Sprite moneybag = new Sprite();
-            //moneybag.setImage("moneybag.png");
+            Sprite moneybag = new Sprite();            
             moneybag.setImage(getClass().getResource("/images/moneybag.png").toExternalForm());
             double px = 350 * Math.random() + 50;
             double py = 350 * Math.random() + 50;
@@ -87,16 +86,16 @@ public final class MoneyBagApp extends Stage {
                 // game logic
                 briefcase.setVelocity(0, 0);
                 if (input.contains("LEFT")) {
-                    briefcase.addVelocity(-150, 0);
+                    briefcase.addVelocity(-250, 0);
                 }
                 if (input.contains("RIGHT")) {
-                    briefcase.addVelocity(150, 0);
+                    briefcase.addVelocity(250, 0);
                 }
                 if (input.contains("UP")) {
-                    briefcase.addVelocity(0, -150);
+                    briefcase.addVelocity(0, -250);
                 }
                 if (input.contains("DOWN")) {
-                    briefcase.addVelocity(0, 150);
+                    briefcase.addVelocity(0, 250);
                 }
 
                 briefcase.update(elapsedTime);

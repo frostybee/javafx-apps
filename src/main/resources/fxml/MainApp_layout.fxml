@@ -10,6 +10,7 @@
       <TilePane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="btnMoneyBag" mnemonicParsing="false" text="Money Bag" />
+            <Button fx:id="btnBouncingBalls" mnemonicParsing="false" text="Bouncing Balls" />
          </children>
          <BorderPane.margin>
             <Insets left="15.0" top="15.0" />
