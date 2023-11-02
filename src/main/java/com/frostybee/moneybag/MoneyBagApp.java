@@ -1,6 +1,6 @@
 package com.frostybee.moneybag;
 
-import java.io.File;
+import com.frostybee.common.Utils;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 /**
  *
@@ -27,25 +25,32 @@ public final class MoneyBagApp extends Stage {
     private int score = 0;
     private long lastNanoTime = System.nanoTime();
     private AudioClip coinClip;
+    private AnimationTimer animation;
 
-    public MoneyBagApp() {        
-        initUIComponents();
+    public MoneyBagApp() {
+        initStageComponents();
     }
 
-    public void initUIComponents() {
+    public void initStageComponents() {
 
         //-- Set up the stage and the scene graph. 
         this.setTitle("Collect the Money Bags!");
-        setAlwaysOnTop(true);
+        Utils.bringToFront(this);
         Group root = new Group();
         Scene scene = new Scene(root);
         this.setScene(scene);
         Canvas canvas = new Canvas(512, 512);
         root.getChildren().add(canvas);
+        this.setOnCloseRequest((event) -> {
+            // Stop the animation timer upon closing this window. 
+            if (animation != null) {
+                animation.stop();
+            }
+        });
 
         //-- Create and configure the media player.                
-        coinClip = new AudioClip(getClass().getResource("/sounds/picked-coin.wav").toExternalForm());                
-        
+        coinClip = new AudioClip(getClass().getResource("/sounds/picked-coin.wav").toExternalForm());
+
         List<String> input = new ArrayList<>();
         scene.setOnKeyPressed((KeyEvent e) -> {
             String code = e.getCode().toString();
@@ -74,7 +79,7 @@ public final class MoneyBagApp extends Stage {
         List<Sprite> moneybagList = new ArrayList<>();
 
         for (int i = 0; i < 15; i++) {
-            Sprite moneybag = new Sprite();            
+            Sprite moneybag = new Sprite();
             moneybag.setImage(getClass().getResource("/images/moneybag.png").toExternalForm());
             double px = 350 * Math.random() + 50;
             double py = 350 * Math.random() + 50;
@@ -82,7 +87,7 @@ public final class MoneyBagApp extends Stage {
             moneybagList.add(moneybag);
         }
 
-        new AnimationTimer() {
+        animation = new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
                 // calculate time since last update.
@@ -129,6 +134,7 @@ public final class MoneyBagApp extends Stage {
                 gc.fillText(pointsText, 360, 36);
                 gc.strokeText(pointsText, 360, 36);
             }
-        }.start();
+        };
+        animation.start();
     }
 }

@@ -34,7 +34,9 @@ application {
    // Define the main class for the application.
    // TODO: specify the fully qualified name of the class 
    //       that contains the main method your would like to run.
-   mainClass = 'com.frostybee.MainApp'  
+    mainClass = 'com.frostybee.MainApp'  
+   //mainClass = 'com.frostybee.tests.Main'  
+   //mainClass = 'com.frostybee.tests.MainCanvas'  
 }
 
 test {

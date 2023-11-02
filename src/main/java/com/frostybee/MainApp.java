@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import com.frostybee.common.Utils;
 
 /**
  * Application class for the JavaFX samples gallery.
@@ -29,7 +30,7 @@ public class MainApp extends Application {
             primaryStage.setScene(scene);
             primaryStage.setTitle("JavaFX Applications Gallery");
             primaryStage.sizeToScene();
-            primaryStage.setAlwaysOnTop(true);
+            Utils.bringToFront(primaryStage);            
             primaryStage.show();
         } catch (IOException ex) {
             ex.printStackTrace();
