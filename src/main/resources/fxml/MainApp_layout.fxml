@@ -15,6 +15,7 @@
             <Button fx:id="btnMoneyBag" mnemonicParsing="false" text="Money Bag" />
             <Button fx:id="btnBouncingBalls" mnemonicParsing="false" text="Bouncing Balls" />
             <Button fx:id="btnBouncingWithCanvas" mnemonicParsing="false" text="Bouncing Balls with Canvas" />
+            <Button fx:id="btnBouncingGravity" mnemonicParsing="false" text="Bouncing Ball with Gravity" />
          </children>
       </FlowPane>
    </center>

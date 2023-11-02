@@ -26,7 +26,7 @@ public class MainApp extends Application {
             loader.setController(new FXMLMainAppController());
             Pane root = loader.load();
             // Create and set the scene to the stage.
-            Scene scene = new Scene(root, 500, 300);
+            Scene scene = new Scene(root, 600, 400);
             primaryStage.setScene(scene);
             primaryStage.setTitle("JavaFX Applications Gallery");
             primaryStage.sizeToScene();

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.frostybee.tests;
+package com.frostybee.gravityballs;
 
 /**
  * Source: http://www.javased.com/?source_dir=SPaTo_Visual_Explorer/lib/src/core/src/processing/core/PVector.java

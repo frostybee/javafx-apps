@@ -2,6 +2,7 @@ package com.frostybee.controllers;
 
 import com.frostybee.bouncing.BouncingWithCanvas;
 import com.frostybee.bouncing.RandomBouncingBalls;
+import com.frostybee.gravityballs.GravityBalls;
 import com.frostybee.moneybag.MoneyBagApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -19,6 +20,8 @@ public class FXMLMainAppController {
     Button btnBouncingBalls;
     @FXML
     Button btnBouncingWithCanvas;
+    @FXML
+    Button btnBouncingGravity;
 
     @FXML
     public void initialize() {
@@ -34,6 +37,10 @@ public class FXMLMainAppController {
         btnBouncingWithCanvas.setOnAction((event) -> {
             BouncingWithCanvas bouncingBalls = new BouncingWithCanvas();
             bouncingBalls.show();
+        });
+         btnBouncingGravity.setOnAction((event) -> {
+            GravityBalls ballsGravity = new GravityBalls();
+            ballsGravity.show();
         });
     }
 }

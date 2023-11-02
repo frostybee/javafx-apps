@@ -1,5 +1,6 @@
 package com.frostybee.bouncing;
 
+import com.frostybee.common.Utils;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -62,7 +63,7 @@ public class BouncingWithCanvas extends Stage {
 
     private void initStageComponents() {
         final Canvas ballContainer = new Canvas();
-
+        Utils.bringToFront(this);
         constrainBallsOnResize(ballContainer);
 
         ballContainer.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
@@ -88,7 +89,7 @@ public class BouncingWithCanvas extends Stage {
 
         final Scene scene = new Scene(root, 800, 600);
         setScene(scene);
-         this.setOnCloseRequest((event) -> {
+        this.setOnCloseRequest((event) -> {
             // Stop the animation timer upon closing this window. 
             if (animation != null) {
                 animation.stop();
