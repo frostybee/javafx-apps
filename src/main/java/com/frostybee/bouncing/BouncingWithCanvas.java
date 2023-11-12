@@ -12,12 +12,10 @@ import static javafx.scene.paint.Color.GREEN;
 import static javafx.scene.paint.Color.PINK;
 import static javafx.scene.paint.Color.RED;
 import static javafx.scene.paint.Color.YELLOW;
-
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
