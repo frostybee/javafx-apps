@@ -1,6 +1,5 @@
 package sr.frostybee.bouncing;
 
-import sr.frostybee.common.AppHelpers;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -45,8 +44,7 @@ public class RandomBouncingBalls extends Stage {
         initStageComponents();
     }
 
-    private void initStageComponents() {
-        AppHelpers.bringToFront(this);
+    private void initStageComponents() {        
         final Pane ballContainer = new Pane();
         constrainBallsOnResize(ballContainer);
         this.setAlwaysOnTop(true);

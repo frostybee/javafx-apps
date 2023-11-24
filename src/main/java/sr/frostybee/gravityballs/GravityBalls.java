@@ -1,6 +1,5 @@
 package sr.frostybee.gravityballs;
 
-import sr.frostybee.common.AppHelpers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,7 +28,6 @@ public class GravityBalls extends Stage {
     }
 
     private void initStageComponents() {
-        AppHelpers.bringToFront(this);
         // create containers
         BorderPane root = new BorderPane();
 
@@ -49,7 +47,7 @@ public class GravityBalls extends Stage {
             }
         });
         setScene(scene);
-        show();
+        //show();
         // add content
         prepareGame();
         // run animation loop

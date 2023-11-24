@@ -40,7 +40,7 @@ application {
    //mainClass = 'sr.frostybee.tests.MainFX'   
     //mainClass = 'sr.frostybee.tests.Explosion'   
     //mainClass = 'sr.frostybee.attraction.Main'   
-
+    //mainClass = 'sr.frostybee.tests.gravitation.Main'   
 }
 
 test {
