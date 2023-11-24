@@ -1,4 +1,4 @@
-package com.frostybee.tests;
+package sr.frostybee.tests;
 
 import java.time.Duration;
 import java.util.Random;

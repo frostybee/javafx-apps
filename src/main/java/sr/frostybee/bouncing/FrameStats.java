@@ -1,4 +1,4 @@
-package com.frostybee.bouncing;
+package sr.frostybee.bouncing;
 
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;

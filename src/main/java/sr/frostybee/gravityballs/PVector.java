@@ -1,4 +1,4 @@
-package com.frostybee.gravityballs;
+package sr.frostybee.gravityballs;
 
 /**
  * Source:

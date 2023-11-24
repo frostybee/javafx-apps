@@ -1,4 +1,4 @@
-package com.frostybee.bouncing;
+package sr.frostybee.bouncing;
 
 import static java.lang.Math.sqrt;
 import javafx.beans.binding.Bindings;

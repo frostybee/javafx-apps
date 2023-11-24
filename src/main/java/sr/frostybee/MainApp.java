@@ -1,13 +1,13 @@
-package com.frostybee;
+package sr.frostybee;
 
-import com.frostybee.controllers.FXMLMainAppController;
+import sr.frostybee.controllers.FXMLMainAppController;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import com.frostybee.common.Utils;
+import sr.frostybee.common.AppHelpers;
 
 /**
  * Application class for the JavaFX samples gallery.
@@ -29,9 +29,9 @@ public class MainApp extends Application {
             Scene scene = new Scene(root, 600, 400);
             primaryStage.setScene(scene);
             primaryStage.setTitle("JavaFX Applications Gallery");
-            primaryStage.sizeToScene();
-            Utils.bringToFront(primaryStage);            
+            primaryStage.sizeToScene();            
             primaryStage.show();
+            AppHelpers.bringToFront(primaryStage);            
         } catch (IOException ex) {
             ex.printStackTrace();
         }

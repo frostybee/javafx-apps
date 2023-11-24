@@ -1,4 +1,4 @@
-package com.frostybee.gravityballs;
+package sr.frostybee.gravityballs;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;

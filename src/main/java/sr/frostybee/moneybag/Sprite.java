@@ -1,4 +1,4 @@
-package com.frostybee.moneybag;
+package sr.frostybee.moneybag;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;

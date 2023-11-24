@@ -1,4 +1,4 @@
-package com.frostybee.snowfalling;
+package sr.frostybee.snowfalling;
 
 import java.util.ArrayList;
 import java.util.List;

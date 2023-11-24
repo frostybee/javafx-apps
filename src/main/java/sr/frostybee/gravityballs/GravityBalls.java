@@ -1,6 +1,6 @@
-package com.frostybee.gravityballs;
+package sr.frostybee.gravityballs;
 
-import com.frostybee.common.Utils;
+import sr.frostybee.common.AppHelpers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,7 +29,7 @@ public class GravityBalls extends Stage {
     }
 
     private void initStageComponents() {
-        Utils.bringToFront(this);
+        AppHelpers.bringToFront(this);
         // create containers
         BorderPane root = new BorderPane();
 

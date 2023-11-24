@@ -1,5 +1,5 @@
 
-package com.frostybee.common;
+package sr.frostybee.common;
 
 import javafx.stage.Stage;
 
@@ -7,7 +7,7 @@ import javafx.stage.Stage;
  *
  * @author frostybee
  */
-public class Utils {
+public class AppHelpers {
      public static void bringToFront(Stage aStage) {
         aStage.setAlwaysOnTop(true);
         aStage.setAlwaysOnTop(false);

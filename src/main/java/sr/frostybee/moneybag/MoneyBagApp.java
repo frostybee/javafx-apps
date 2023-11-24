@@ -1,6 +1,6 @@
-package com.frostybee.moneybag;
+package sr.frostybee.moneybag;
 
-import com.frostybee.common.Utils;
+import sr.frostybee.common.AppHelpers;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
@@ -35,7 +35,7 @@ public final class MoneyBagApp extends Stage {
 
         //-- Set up the stage and the scene graph. 
         this.setTitle("Collect the Money Bags!");
-        Utils.bringToFront(this);
+        AppHelpers.bringToFront(this);
         Group root = new Group();
         Scene scene = new Scene(root);
         this.setScene(scene);

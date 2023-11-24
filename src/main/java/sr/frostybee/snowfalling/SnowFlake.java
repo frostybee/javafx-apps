@@ -1,4 +1,4 @@
-package com.frostybee.snowfalling;
+package sr.frostybee.snowfalling;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;

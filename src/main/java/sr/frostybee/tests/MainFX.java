@@ -1,4 +1,4 @@
-package com.frostybee.tests;
+package sr.frostybee.tests;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;

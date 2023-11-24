@@ -1,69 +1,55 @@
-package com.frostybee.bouncing;
+package sr.frostybee.bouncing;
 
-import com.frostybee.common.Utils;
+import sr.frostybee.common.AppHelpers;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
-import static javafx.scene.paint.Color.BLACK;
-import static javafx.scene.paint.Color.BLUE;
-import static javafx.scene.paint.Color.BROWN;
-import static javafx.scene.paint.Color.GREEN;
-import static javafx.scene.paint.Color.PINK;
-import static javafx.scene.paint.Color.RED;
-import static javafx.scene.paint.Color.YELLOW;
+import static javafx.scene.paint.Color.*;
 import java.util.ListIterator;
 import java.util.Random;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.ReadOnlyStringProperty;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
+import javafx.collections.*;
+import javafx.collections.ListChangeListener.Change;
+import javafx.scene.*;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
+import javafx.stage.*;
 
 /**
- * Original code from: https://gist.github.com/james-d/8327842
- *
- * Modified to use canvas drawing instead of shapes by
- * https://github.com/zarandok/megabounce
- *
+ * @source: https://gist.github.com/james-d/8327842
  * @author frostybee
  */
-public class BouncingWithCanvas extends Stage {
+public class RandomBouncingBalls extends Stage {
 
-    private List<Ball> balls = new ArrayList();
+    private final ObservableList<Ball> balls;
     private static final int NUM_BALLS = 400;
     private static final double MIN_RADIUS = 5;
     private static final double MAX_RADIUS = 15;
     private static final double MIN_SPEED = 50;
-    private static final double MAX_SPEED = 250;
+    private static final double MAX_SPEED = 150;
     private static final Color[] COLORS = new Color[]{RED, YELLOW, GREEN,
         BROWN, BLUE, PINK, BLACK};
 
-    private final FrameStats frameStats = new FrameStats();
+    private final FrameStats frameStats;
     private AnimationTimer animation;
 
-    public BouncingWithCanvas() {
+    public RandomBouncingBalls() {
+        balls = FXCollections.observableArrayList();
+        frameStats = new FrameStats();
         initStageComponents();
     }
 
     private void initStageComponents() {
-        final Canvas ballContainer = new Canvas();
-        Utils.bringToFront(this);
+        AppHelpers.bringToFront(this);
+        final Pane ballContainer = new Pane();
         constrainBallsOnResize(ballContainer);
-
+        this.setAlwaysOnTop(true);
         ballContainer.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 balls.clear();
@@ -71,22 +57,28 @@ public class BouncingWithCanvas extends Stage {
             }
         });
 
+        balls.addListener((Change<? extends Ball> change) -> {
+            while (change.next()) {
+                for (Ball b : change.getAddedSubList()) {
+                    ballContainer.getChildren().add(b.getView());
+                }
+                for (Ball b : change.getRemoved()) {
+                    ballContainer.getChildren().remove(b.getView());
+                }
+            }
+        });
+
         createBalls(NUM_BALLS, MIN_RADIUS, MAX_RADIUS, MIN_SPEED, MAX_SPEED, 400, 300);
 
         final BorderPane root = new BorderPane();
-
-        final Pane canvasContainer = new Pane(ballContainer);
-        ballContainer.widthProperty().bind(canvasContainer.widthProperty());
-        ballContainer.heightProperty().bind(canvasContainer.heightProperty());
-
         final Label stats = new Label();
         stats.textProperty().bind(frameStats.textProperty());
 
-        root.setCenter(canvasContainer);
+        root.setCenter(ballContainer);
         root.setBottom(stats);
 
         final Scene scene = new Scene(root, 800, 600);
-        setScene(scene);
+        this.setScene(scene);
         this.setOnCloseRequest((event) -> {
             // Stop the animation timer upon closing this window. 
             if (animation != null) {
@@ -96,7 +88,7 @@ public class BouncingWithCanvas extends Stage {
         startAnimation(ballContainer);
     }
 
-    private void startAnimation(final Canvas ballContainer) {
+    private void startAnimation(final Pane ballContainer) {
         final LongProperty lastUpdateTime = new SimpleLongProperty(0);
         animation = new AnimationTimer() {
             @Override
@@ -104,7 +96,7 @@ public class BouncingWithCanvas extends Stage {
                 if (lastUpdateTime.get() > 0) {
                     long elapsedTime = timestamp - lastUpdateTime.get();
                     checkCollisions(ballContainer.getWidth(), ballContainer.getHeight());
-                    updateWorld(elapsedTime, ballContainer);
+                    updateWorld(elapsedTime);
                     frameStats.addFrame(elapsedTime);
                 }
                 lastUpdateTime.set(timestamp);
@@ -113,17 +105,11 @@ public class BouncingWithCanvas extends Stage {
         animation.start();
     }
 
-    private void updateWorld(long elapsedTime, final Canvas ballContainer) {
-        final GraphicsContext gc = ballContainer.getGraphicsContext2D();
+    private void updateWorld(long elapsedTime) {
         double elapsedSeconds = elapsedTime / 1_000_000_000.0;
-        gc.setFill(Color.LIGHTGRAY);
-        gc.fillRect(0, 0, ballContainer.getWidth(), ballContainer.getHeight());
         for (Ball b : balls) {
             b.setCenterX(b.getCenterX() + elapsedSeconds * b.getXVelocity());
             b.setCenterY(b.getCenterY() + elapsedSeconds * b.getYVelocity());
-            gc.setFill(b.getColor());
-            double r = b.getRadius();
-            gc.fillOval(b.getCenterX() - r, b.getCenterY() - r, 2 * r, 2 * r);
         }
     }
 
@@ -209,30 +195,15 @@ public class BouncingWithCanvas extends Stage {
 
             final double speed = minSpeed + (maxSpeed - minSpeed) * rng.nextDouble();
             final double angle = 2 * PI * rng.nextDouble();
-            Ball ball = new Ball(
-                    initialX, initialY,
-                    radius, speed * cos(angle), speed * sin(angle),
-                    mass, COLORS[i % COLORS.length]
-            );
+            Ball ball = new Ball(initialX, initialY, radius, speed * cos(angle),
+                    speed * sin(angle), mass);
+            ball.getView().setFill(COLORS[i % COLORS.length]);
             balls.add(ball);
         }
     }
 
-    private void constrainBallsOnResize(final Canvas ballContainer) {
-        ballContainer.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable,
-                    Number oldValue, Number newValue) {
-                if (newValue.doubleValue() < oldValue.doubleValue()) {
-                    for (Ball b : balls) {
-                        double max = newValue.doubleValue() - b.getRadius();
-                        if (b.getCenterX() > max) {
-                            b.setCenterX(max);
-                        }
-                    }
-                }
-            }
-        });
+    private void constrainBallsOnResize(final Pane ballContainer) {
+        ballContainer.widthProperty().addListener(new ChangeListenerImpl());
 
         ballContainer.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             if (newValue.doubleValue() < oldValue.doubleValue()) {
@@ -246,106 +217,22 @@ public class BouncingWithCanvas extends Stage {
         });
     }
 
-    private static class Ball {
+    private class ChangeListenerImpl implements ChangeListener<Number> {
 
-        private double centerX; // pixels
-        private double centerY;
-        private final double radius;
-        private double xVelocity; // pixels per second
-        private double yVelocity;
-        private final double mass; // arbitrary units
-        private final Color color;
-
-        public Ball(
-                double centerX, double centerY, double radius,
-                double xVelocity, double yVelocity,
-                double mass, Color color
-        ) {
-            this.centerX = centerX;
-            this.centerY = centerY;
-            this.radius = radius;
-            this.xVelocity = xVelocity;
-            this.yVelocity = yVelocity;
-            this.mass = mass;
-            this.color = color;
-        }
-
-        public double getMass() {
-            return mass;
-        }
-
-        public double getRadius() {
-            return radius;
-        }
-
-        public final double getXVelocity() {
-            return xVelocity;
-        }
-
-        public final void setXVelocity(double xVelocity) {
-            this.xVelocity = xVelocity;
-        }
-
-        public final double getYVelocity() {
-            return yVelocity;
-        }
-
-        public final void setYVelocity(double yVelocity) {
-            this.yVelocity = yVelocity;
-        }
-
-        public final double getCenterX() {
-            return centerX;
-        }
-
-        public final void setCenterX(double centerX) {
-            this.centerX = centerX;
-        }
-
-        public final double getCenterY() {
-            return centerY;
-        }
-
-        public final void setCenterY(double centerY) {
-            this.centerY = centerY;
-        }
-
-        public Color getColor() {
-            return color;
-        }
-    }
-
-    private static class FrameStats {
-
-        private long frameCount;
-        private double meanFrameInterval; // millis
-        private final ReadOnlyStringWrapper text = new ReadOnlyStringWrapper(this, "text", "Frame count: 0 Average frame interval: N/A");
-
-        public long getFrameCount() {
-            return frameCount;
-        }
-
-        public double getMeanFrameInterval() {
-            return meanFrameInterval;
-        }
-
-        public void addFrame(long frameDurationNanos) {
-            meanFrameInterval = (meanFrameInterval * frameCount + frameDurationNanos / 1_000_000.0) / (frameCount + 1);
-            frameCount++;
-            text.set(toString());
-        }
-
-        public String getText() {
-            return text.get();
-        }
-
-        public ReadOnlyStringProperty textProperty() {
-            return text.getReadOnlyProperty();
+        public ChangeListenerImpl() {
         }
 
         @Override
-        public String toString() {
-            return String.format("Frame count: %,d Average frame interval: %.3f milliseconds", getFrameCount(), getMeanFrameInterval());
+        public void changed(ObservableValue<? extends Number> observable,
+                Number oldValue, Number newValue) {
+            if (newValue.doubleValue() < oldValue.doubleValue()) {
+                for (Ball b : balls) {
+                    double max = newValue.doubleValue() - b.getRadius();
+                    if (b.getCenterX() > max) {
+                        b.setCenterX(max);
+                    }
+                }
+            }
         }
     }
 }
