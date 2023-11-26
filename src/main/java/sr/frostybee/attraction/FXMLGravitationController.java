@@ -7,6 +7,7 @@ import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -29,9 +30,16 @@ public class FXMLGravitationController {
     private Button btnStop;
     @FXML
     private Button btnReset;
+    @FXML
+    private Slider sldBodiesNbr;
+    @FXML
+    private Slider sldMinAttractionDistance;
+    @FXML
+    private Slider sldMaxAttractionDistance;
     private static Random random = new Random();
     private List<RigidBody> rigidBodies = new ArrayList<>();
     private AnimationTimer animationLoop;
+    private SimulationSettings settings = new SimulationSettings();
 
     @FXML
     public void initialize() {
@@ -40,6 +48,18 @@ public class FXMLGravitationController {
     }
 
     private void initUiControls() {
+        sldBodiesNbr.valueProperty().addListener((observable, oldValue, newValue) -> {
+            settings.setRigidBodiesCount(newValue.intValue());
+            enableResetButton();
+        });
+        sldMinAttractionDistance.valueProperty().addListener((observable, oldValue, newValue) -> {
+            settings.setMinAttractionDistance(newValue.doubleValue());
+            enableResetButton();
+        });
+        sldMaxAttractionDistance.valueProperty().addListener((observable, oldValue, newValue) -> {
+            settings.setMaxAttractionDistance(newValue.doubleValue());
+            enableResetButton();
+        });
         btnStart.setOnAction((event) -> {
             startSimulation();
             disableSimulationButtons(true, false, false);
@@ -57,7 +77,7 @@ public class FXMLGravitationController {
     private void createRigidBodies() {
         rigidBodies.clear();
         // add sprites
-        for (int i = 0; i < Settings.MOVER_COUNT; i++) {
+        for (int i = 0; i < settings.getRigidBodiesCount(); i++) {
             // random location
             double x = random.nextDouble() * simulationPane.getWidth();
             double y = random.nextDouble() * simulationPane.getHeight();
@@ -70,19 +90,17 @@ public class FXMLGravitationController {
             //Color color = Color.hsb(random.nextInt(60), 1, 1);
             Color color = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
             // create sprite and add to layer
-            RigidBody mover = new RigidBody(location, velocity, acceleration, mass, color);
+            RigidBody body = new RigidBody(location, velocity, acceleration, mass, color, settings);
 
             // register sprite
-            rigidBodies.add(mover);
+            rigidBodies.add(body);
 
             // add this node to layer
-            simulationPane.getChildren().add(mover);
+            simulationPane.getChildren().add(body);
         }
     }
 
     private void initAnimationLoop() {
-
-        // start game
         animationLoop = new AnimationTimer() {
             private long lastUpdate = 0;
 
@@ -142,5 +160,8 @@ public class FXMLGravitationController {
         btnStart.setDisable(start);
         btnStop.setDisable(stop);
         btnReset.setDisable(reset);
+    }
+     private void enableResetButton() {
+        disableSimulationButtons(true, true, false);
     }
 }

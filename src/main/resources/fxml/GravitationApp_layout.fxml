@@ -5,9 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -22,14 +19,8 @@
     <right>
         <VBox fx:id="vbSettings" depthTest="DISABLE" prefHeight="400.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
-                <Label text="Max Flake Radius:" />
-                <Spinner fx:id="spMaxFlakeRadius">
-                    <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory max="15" min="8" />
-                    </valueFactory>
-                </Spinner>
-                <Label text="Snowflakes Number:" />
-            <Slider fx:id="sldSnowflakesNbr" blockIncrement="50.0" majorTickUnit="500.0" max="2000.0" min="400.0" minorTickCount="5" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="400.0">
+                <Label text="Balls Number:" />
+            <Slider fx:id="sldBodiesNbr" blockIncrement="50.0" majorTickUnit="100.0" max="1500.0" min="30.0" minorTickCount="10" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="30.0">
                <effect>
                   <DropShadow blurType="ONE_PASS_BOX">
                      <color>
@@ -38,23 +29,16 @@
                   </DropShadow>
                </effect>
             </Slider>
-            <Label text="Max Drop Speed:" />
-            <Slider fx:id="sldMaxDropSpeed" majorTickUnit="10.0" max="70.0" min="4.5" minorTickCount="5" showTickLabels="true" showTickMarks="true" value="1.5">
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color red="0.027290448546409607" green="0.053541261702775955" blue="0.42105263471603394" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Slider>
             <Separator prefWidth="200.0">
                <VBox.margin>
-                  <Insets top="15.0" />
+                  <Insets top="5.0" />
                </VBox.margin>
             </Separator>
-            <Label text="Wind Speed:" />
-            <Slider fx:id="sldWindSpeed" majorTickUnit="10.0" max="150.0" min="4.5" minorTickCount="5" showTickLabels="true" showTickMarks="true" value="1.5">
+            <Label text="Min Attraction Distance:">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin></Label>
+            <Slider fx:id="sldMinAttractionDistance" blockIncrement="2.0" majorTickUnit="5.0" max="30.0" min="4.5" minorTickCount="5" showTickLabels="true" showTickMarks="true" value="4.5">
                <effect>
                   <DropShadow>
                      <color>
@@ -63,62 +47,25 @@
                   </DropShadow>
                </effect>
             </Slider>
-            <Label text="Apply Wind: " />
+            <Label text="Max Attraction Distance:" />
+            <Slider fx:id="sldMaxAttractionDistance" blockIncrement="2.0" majorTickUnit="10.0" max="70.0" min="25.0" minorTickCount="5" showTickLabels="true" showTickMarks="true" value="25.0">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color red="0.027290448546409607" green="0.053541261702775955" blue="0.42105263471603394" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Slider>
             <HBox fx:id="hbxWindGroup" spacing="5.0">
-               <children>
-                  <ToggleButton fx:id="tgbtnWindON" mnemonicParsing="false" selected="true" text="ON">
-                     <effect>
-                        <DropShadow>
-                           <color>
-                              <Color red="0.02217348851263523" green="0.09719379246234894" blue="0.3684210479259491" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </ToggleButton>
-                  <ToggleButton fx:id="tgbtnWindOFF" mnemonicParsing="false" text="OFF">
-                     <effect>
-                        <DropShadow>
-                           <color>
-                              <Color red="0.02217348851263523" green="0.09719379246234894" blue="0.3684210479259491" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </ToggleButton>
-               </children>
                <VBox.margin>
                   <Insets top="2.0" />
                </VBox.margin>
             </HBox>
-            <Label text="Wind Direction:">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Label>
-            <HBox fx:id="hbxWindGroup1" spacing="5.0">
-               <children>
-                  <ToggleButton fx:id="tgbtnWindDirectionRight" mnemonicParsing="false" selected="true" text="RIGHT">
-                     <effect>
-                        <DropShadow>
-                           <color>
-                              <Color red="0.02217348851263523" green="0.09719379246234894" blue="0.3684210479259491" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </ToggleButton>
-                  <ToggleButton fx:id="tgbtnWindDirectionLeft" mnemonicParsing="false" text="LEFT">
-                     <effect>
-                        <DropShadow>
-                           <color>
-                              <Color red="0.02217348851263523" green="0.09719379246234894" blue="0.3684210479259491" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </ToggleButton>
-               </children>
-            </HBox>
+            <HBox fx:id="hbxWindGroup1" spacing="5.0" />
             <Separator prefWidth="200.0">
                <VBox.margin>
-                  <Insets top="30.0" />
+                  <Insets top="10.0" />
                </VBox.margin>
             </Separator>                
                 <HBox prefHeight="46.0" prefWidth="150.0" spacing="5.0">

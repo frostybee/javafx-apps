@@ -10,12 +10,11 @@ public class RigidBody extends Circle {
     private Point2D location;
     private Point2D velocity;
     private Point2D acceleration;
-    private double mass;
-
-    private double maxSpeed = Settings.MOVER_MAX_SPEED;
-
-    public RigidBody(Point2D location, Point2D velocity, Point2D acceleration, double mass, Color color) {
-
+    private double mass = 1;
+    private SimulationSettings settings;
+    
+    public RigidBody(Point2D location, Point2D velocity, Point2D acceleration, double mass, Color color, SimulationSettings settings) {
+        this.settings = settings;
         this.location = location;
         this.velocity = velocity;
         this.acceleration = acceleration;
@@ -35,14 +34,13 @@ public class RigidBody extends Circle {
     }
 
     public void move() {
-
         // set velocity depending on acceleration
         velocity = velocity.add(acceleration);
         // limit velocity to max speed
-        double mag = velocity.magnitude();
-        if (mag > Settings.MOVER_MAX_SPEED) {
+        double magnitude = velocity.magnitude();
+        if (magnitude > settings.getBodyMaxSpeed()) {
             velocity = velocity.normalize();
-            velocity = velocity.multiply(mag);
+            velocity = velocity.multiply(magnitude);
         }
         // change location depending on velocity
         location = location.add(velocity);
@@ -50,15 +48,15 @@ public class RigidBody extends Circle {
         acceleration = new Point2D(0, 0);
     }
 
-    public Point2D attract(RigidBody m) {
+    public Point2D attract(RigidBody rigidBody) {
         // force direction
-        Point2D force = location.subtract(m.location);
+        Point2D force = location.subtract(rigidBody.location);
         double distance = force.magnitude();
         // constrain movement
-        distance = constrain(distance, Settings.ATTRACTION_DISTANCE_MIN, Settings.ATTRACTION_DISTANCE_MAX);
+        distance = constrain(distance, settings.getMinAttractionDistance(), settings.getMaxAttractionDistance());
         force = force.normalize();
         // force magnitude
-        double strength = (Settings.GRAVITATIONAL_CONSTANT * mass * m.mass) / (distance * distance);
+        double strength = (settings.getGravitationalConstant() * mass * rigidBody.mass) / (distance * distance);
         force = force.multiply(strength);
         return force;
     }
