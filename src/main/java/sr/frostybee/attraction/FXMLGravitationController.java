@@ -9,6 +9,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 /**
  * FXML controller class for the FX Apps Gallery's main stage.
@@ -35,6 +36,7 @@ public class FXMLGravitationController {
     @FXML
     public void initialize() {
         initUiControls();
+        initAnimationLoop();
     }
 
     private void initUiControls() {
@@ -65,9 +67,10 @@ public class FXMLGravitationController {
             Point2D velocity = new Point2D(0, 0);
             Point2D acceleration = new Point2D(0, 0);
             double mass = random.nextDouble() * 10 + 10;
-
+            //Color color = Color.hsb(random.nextInt(60), 1, 1);
+            Color color = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
             // create sprite and add to layer
-            RigidBody mover = new RigidBody(location, velocity, acceleration, mass);
+            RigidBody mover = new RigidBody(location, velocity, acceleration, mass, color);
 
             // register sprite
             rigidBodies.add(mover);
@@ -88,16 +91,16 @@ public class FXMLGravitationController {
                 if (now - lastUpdate >= 25000000) {
                     lastUpdate = now;
                     // force: attraction
-                    for (RigidBody m1 : rigidBodies) {
-                        for (RigidBody m2 : rigidBodies) {
+                    for (RigidBody sourceBody : rigidBodies) {
+                        for (RigidBody targetBody : rigidBodies) {
 
-                            if (m1 == m2) {
+                            if (sourceBody == targetBody) {
                                 continue;
                             }
                             // calculate attraction
-                            Point2D force = m1.attract(m2);
+                            Point2D force = sourceBody.attract(targetBody);
                             // apply attraction
-                            m2.applyForce(force);
+                            targetBody.applyForce(force);
 
                         }
                     }
@@ -108,7 +111,6 @@ public class FXMLGravitationController {
                 }
             }
         };
-        animationLoop.start();
     }
 
     void stopSimulation() {
@@ -122,7 +124,6 @@ public class FXMLGravitationController {
         stopSimulation();
         if (rigidBodies.isEmpty()) {
             createRigidBodies();
-            initAnimationLoop();
         }
         if (animationLoop != null) {
             animationLoop.start();
@@ -130,7 +131,10 @@ public class FXMLGravitationController {
     }
 
     private void resetSimulation() {
-
+        rigidBodies.clear();
+        stopSimulation();
+        // Remove all the bodies from the simulation panels.        
+        simulationPane.getChildren().clear();
         disableSimulationButtons(false, true, true);
     }
 

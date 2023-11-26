@@ -34,27 +34,26 @@ public class FXMLMainAppController {
     @FXML
     public void initialize() {
         //-- Add events to the gallery's app launcher buttons. 
-        addOnActionEvent(btnMoneyBag, new MoneyBagApp());
-        addOnActionEvent(btnBouncingBalls, new RandomBouncingBalls());
-        addOnActionEvent(btnBouncingWithCanvas, new BouncingWithCanvas());
-        addOnActionEvent(btnBouncingGravity, new GravityBalls());
-        //addOnActionEvent(btnGravitation, new GravitationStage());
+        btnMoneyBag.setOnAction((event) -> {
+            showStage(new MoneyBagApp());
+        });
+        btnBouncingBalls.setOnAction((event) -> {
+            showStage(new RandomBouncingBalls());
+        });
+        btnBouncingWithCanvas.setOnAction((event) -> {
+            showStage(new BouncingWithCanvas());
+        });
+        btnBouncingGravity.setOnAction((event) -> {
+            showStage(new GravityBalls());
+        });
+
         btnGravitation.setOnAction((event) -> {
-            GravitationStage aStage;
-            try {
-                aStage = new GravitationStage();
-                aStage.show();     
-                AppHelpers.bringToFront(aStage);
-            } catch (IOException ex) {
-                Logger.getLogger(FXMLMainAppController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                showStage(new GravitationStage());
         });
     }
 
-    private void addOnActionEvent(Button aButton, Stage aStage) {
-        aButton.setOnAction((event) -> {
-            aStage.show();
-            AppHelpers.bringToFront(aStage);
-        });
+    private void showStage(Stage aStage) {
+        aStage.show();
+        AppHelpers.bringToFront(aStage);
     }
 }

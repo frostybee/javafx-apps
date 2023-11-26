@@ -6,109 +6,101 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-
 public class Sprite extends Region {
 
-	PVector location;
-	PVector velocity;
-	PVector acceleration;
+    PVector location;
+    PVector velocity;
+    PVector acceleration;
 
-	double mass;
+    double mass;
 
-	double maxSpeed = Settings.SPRITE_MAX_SPEED;
+    double maxSpeed = Settings.SPRITE_MAX_SPEED;
 
-	Node view;
+    Node view;
 
-	// view dimensions
-	double width = 30;
-	double height = width;
-	double centerX = width / 2.0;
-	double centerY = height / 2.0;
-	double radius = width / 2.0;
+    // view dimensions
+    double width = 30;
+    double height = width;
+    double centerX = width / 2.0;
+    double centerY = height / 2.0;
+    double radius = width / 2.0;
 
-	Pane layer = null;
+    Pane layer = null;
 
-	public Sprite(Pane layer, PVector location, PVector velocity, PVector acceleration, double mass) {
+    public Sprite(Pane layer, PVector location, PVector velocity, PVector acceleration, double mass, Color color) {
+        this.layer = layer;
+        this.location = location;
+        this.velocity = velocity;
+        this.acceleration = acceleration;
+        this.mass = mass;
 
-		this.layer = layer;
+        // initialize view depending on mass
+        width = mass;
+        height = width;
+        centerX = width / 2.0;
+        centerY = height / 2.0;
+        radius = width / 2.0;
 
-		this.location = location;
-		this.velocity = velocity;
-		this.acceleration = acceleration;
-		this.mass = mass;
+        // create view
+        Circle circle = new Circle(radius);
+        circle.setCenterX(radius);
+        circle.setCenterY(radius);
 
-		// initialize view depending on mass
-		width = mass;
-		height = width;
-		centerX = width / 2.0;
-		centerY = height / 2.0;
-		radius = width / 2.0;
+        circle.setStroke(color);
+        circle.setFill(color.deriveColor(2, 2, 1, 0.5));
 
-		// create view
-		Circle circle = new Circle(radius);
-		circle.setCenterX(radius);
-		circle.setCenterY(radius);
+        this.view = circle;
 
-		circle.setStroke(Color.BLUE);
-		circle.setFill(Color.BLUE.deriveColor(1, 1, 1, 0.3));
+        // add view to this node
+        getChildren().add(view);
 
-		this.view = circle;
+        // add this node to layer
+        layer.getChildren().add(this);
 
-		// add view to this node
-		getChildren().add(view);
+    }
 
-		// add this node to layer
-		layer.getChildren().add(this);
+    public void applyForce(PVector force) {
+        // Making a copy of the PVector before using it!
+        PVector f = PVector.div(force, mass);
+        acceleration.add(f);
+    }
 
-	}
+    public void move() {
+        // set velocity depending on acceleration
+        velocity.add(acceleration);
+        // limit velocity to max speed
+        velocity.limit(maxSpeed);
+        // change location depending on velocity
+        location.add(velocity);
+        // clear acceleration
+        acceleration.mult(0);
+    }
 
-	public void applyForce(PVector force) {
+    /**
+     * Ensure sprite can't go outside bounds
+     */
+    public void checkBounds() {
 
-		// Making a copy of the PVector before using it!
-		PVector f = PVector.div(force, mass);
-		acceleration.add(f);
-	}
+        if (location.x > layer.getWidth() - radius) {
+            location.x = layer.getWidth() - radius;
+            velocity.x *= -1;
+        } else if (location.x < 0 + radius) {
+            velocity.x *= -1;
+            location.x = 0 + radius;
+        }
 
-	public void move() {
+        // reverse direction to bounce off floor
+        if (location.y > layer.getHeight() - radius) {
+            velocity.y *= -1;
+            location.y = layer.getHeight() - radius;
+        }
 
-		// set velocity depending on acceleration
-		velocity.add(acceleration);
+    }
 
-		// limit velocity to max speed
-		velocity.limit(maxSpeed);
-
-		// change location depending on velocity
-		location.add(velocity);
-
-		// clear acceleration
-		acceleration.mult(0);
-	}
-
-	/**
-	 * Ensure sprite can't go outside bounds
-	 */
-	public void checkBounds() {
-
-		if (location.x > layer.getWidth() - radius) {
-			location.x = layer.getWidth() - radius;
-			velocity.x *= -1;
-		} else if (location.x < 0 + radius) {
-			velocity.x *= -1;
-			location.x = 0 + radius;
-		}
-
-		// reverse direction to bounce off floor
-		if (location.y > layer.getHeight() - radius) {
-			velocity.y *= -1;
-			location.y = layer.getHeight() - radius;
-		}
-
-	}
-
-	/**
-	 * Update node position
-	 */
-	public void display() {
-		relocate(location.x - centerX, location.y - centerY);
-	}
+    /**
+     * Update node position
+     */
+    public void render() {
+        relocate(location.x - centerX, location.y - centerY);
+    }
 }
