@@ -12,8 +12,9 @@ public class GravitationStage extends Stage {
 
     private FXMLGravitationController controller;
 
-    public GravitationStage() {
+    public GravitationStage(Stage mainStage) {
         try {
+            initOwner(mainStage);
             // Load the scene graph from FXML layout file. 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GravitationApp_layout.fxml"));
             controller = new FXMLGravitationController();

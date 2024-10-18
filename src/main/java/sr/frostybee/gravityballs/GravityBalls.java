@@ -31,7 +31,8 @@ public class GravityBalls extends Stage {
     private static final Color[] COLORS = new Color[]{RED, YELLOW, GREEN,
         BLUE, PURPLE, CADETBLUE, DARKBLUE, PINK, BLACK};
 
-    public GravityBalls() {
+    public GravityBalls(Stage mainStage) {
+        initOwner(mainStage);
         initStageComponents();
     }
 

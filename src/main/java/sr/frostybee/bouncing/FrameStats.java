@@ -2,7 +2,6 @@ package sr.frostybee.bouncing;
 
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.ObservableList;
 
 /**
  *

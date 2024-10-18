@@ -26,7 +26,8 @@ public final class MoneyBagApp extends Stage {
     private AudioClip coinClip;
     private AnimationTimer animation;
 
-    public MoneyBagApp() {
+    public MoneyBagApp(Stage mainStage) {
+        initOwner(mainStage);
         initStageComponents();
     }
 

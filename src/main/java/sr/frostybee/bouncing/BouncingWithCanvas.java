@@ -55,7 +55,8 @@ public class BouncingWithCanvas extends Stage {
     private final FrameStats frameStats = new FrameStats();
     private AnimationTimer animation;
 
-    public BouncingWithCanvas() {
+    public BouncingWithCanvas(Stage mainStage) {
+        initOwner(mainStage);
         initStageComponents();
     }
 

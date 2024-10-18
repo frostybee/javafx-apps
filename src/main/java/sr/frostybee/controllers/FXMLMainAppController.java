@@ -1,8 +1,5 @@
 package sr.frostybee.controllers;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import sr.frostybee.bouncing.BouncingWithCanvas;
 import sr.frostybee.bouncing.RandomBouncingBalls;
 import sr.frostybee.gravityballs.GravityBalls;
@@ -30,30 +27,35 @@ public class FXMLMainAppController {
     Button btnBouncingGravity;
     @FXML
     Button btnGravitation;
+    private Stage mainStage;
 
     @FXML
     public void initialize() {
         //-- Add events to the gallery's app launcher buttons. 
         btnMoneyBag.setOnAction((event) -> {
-            showStage(new MoneyBagApp());
+            showStage(new MoneyBagApp(mainStage));
         });
         btnBouncingBalls.setOnAction((event) -> {
-            showStage(new RandomBouncingBalls());
+            showStage(new RandomBouncingBalls(mainStage));
         });
         btnBouncingWithCanvas.setOnAction((event) -> {
-            showStage(new BouncingWithCanvas());
+            showStage(new BouncingWithCanvas(mainStage));
         });
         btnBouncingGravity.setOnAction((event) -> {
-            showStage(new GravityBalls());
+            showStage(new GravityBalls(mainStage));
         });
 
         btnGravitation.setOnAction((event) -> {
-                showStage(new GravitationStage());
+                showStage(new GravitationStage(mainStage));
         });
     }
 
     private void showStage(Stage aStage) {
         aStage.show();
         AppHelpers.bringToFront(aStage);
+    }
+
+    public void setStageOwnder(Stage primaryStage) {
+        mainStage = primaryStage;
     }
 }

@@ -11,13 +11,9 @@ public class Sprite extends Region {
     PVector location;
     PVector velocity;
     PVector acceleration;
-
     double mass;
-
     double maxSpeed = Settings.SPRITE_MAX_SPEED;
-
     Node view;
-
     // view dimensions
     double width = 30;
     double height = width;

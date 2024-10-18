@@ -38,13 +38,14 @@ public class RandomBouncingBalls extends Stage {
     private final FrameStats frameStats;
     private AnimationTimer animation;
 
-    public RandomBouncingBalls() {
+    public RandomBouncingBalls(Stage mainStage) {
+        initOwner(mainStage);
         balls = FXCollections.observableArrayList();
         frameStats = new FrameStats();
         initStageComponents();
     }
 
-    private void initStageComponents() {        
+    private void initStageComponents() {
         final Pane ballContainer = new Pane();
         constrainBallsOnResize(ballContainer);
         this.setAlwaysOnTop(true);
@@ -90,14 +91,14 @@ public class RandomBouncingBalls extends Stage {
         final LongProperty lastUpdateTime = new SimpleLongProperty(0);
         animation = new AnimationTimer() {
             @Override
-            public void handle(long timestamp) {
+            public void handle(long now) {
                 if (lastUpdateTime.get() > 0) {
-                    long elapsedTime = timestamp - lastUpdateTime.get();
+                    long elapsedTime = now - lastUpdateTime.get();
                     checkCollisions(ballContainer.getWidth(), ballContainer.getHeight());
                     updateWorld(elapsedTime);
                     frameStats.addFrame(elapsedTime);
                 }
-                lastUpdateTime.set(timestamp);
+                lastUpdateTime.set(now);
             }
         };
         animation.start();

@@ -16,6 +16,8 @@ import sr.frostybee.common.AppHelpers;
  */
 public class MainApp extends Application {
 
+    private FXMLMainAppController mainAppController;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
@@ -23,15 +25,17 @@ public class MainApp extends Application {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainApp_layout.fxml"));
             //-- Associate the main scene graph with its FXML controller.
-            loader.setController(new FXMLMainAppController());
+            mainAppController = new FXMLMainAppController();
+            mainAppController.setStageOwnder(primaryStage);
+            loader.setController(mainAppController);
             Pane root = loader.load();
             // Create and set the scene to the stage.
             Scene scene = new Scene(root, 600, 400);
             primaryStage.setScene(scene);
             primaryStage.setTitle("JavaFX Applications Gallery");
-            primaryStage.sizeToScene();            
+            primaryStage.sizeToScene();
             primaryStage.show();
-            AppHelpers.bringToFront(primaryStage);            
+            AppHelpers.bringToFront(primaryStage);
         } catch (IOException ex) {
             ex.printStackTrace();
         }

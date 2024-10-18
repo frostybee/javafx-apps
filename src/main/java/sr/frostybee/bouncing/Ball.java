@@ -21,12 +21,12 @@ public class Ball {
     private final double mass; // arbitrary units
     private final double radius; // pixels
 
-    private final Circle view;
+    private final Circle ball;
 
     public Ball(double centerX, double centerY, double radius,
             double xVelocity, double yVelocity, double mass) {
 
-        this.view = new Circle(centerX, centerY, radius);
+        this.ball = new Circle(centerX, centerY, radius);
         this.xVelocity = new SimpleDoubleProperty(this, "xVelocity", xVelocity);
         this.yVelocity = new SimpleDoubleProperty(this, "yVelocity", yVelocity);
         this.speed = new ReadOnlyDoubleWrapper(this, "speed");
@@ -37,7 +37,7 @@ public class Ball {
         }, this.xVelocity, this.yVelocity));
         this.mass = mass;
         this.radius = radius;
-        view.setRadius(radius);
+        ball.setRadius(radius);
     }
 
     public double getMass() {
@@ -81,30 +81,30 @@ public class Ball {
     }
 
     public final double getCenterX() {
-        return view.getCenterX();
+        return ball.getCenterX();
     }
 
     public final void setCenterX(double centerX) {
-        view.setCenterX(centerX);
+        ball.setCenterX(centerX);
     }
 
     public final DoubleProperty centerXProperty() {
-        return view.centerXProperty();
+        return ball.centerXProperty();
     }
 
     public final double getCenterY() {
-        return view.getCenterY();
+        return ball.getCenterY();
     }
 
     public final void setCenterY(double centerY) {
-        view.setCenterY(centerY);
+        ball.setCenterY(centerY);
     }
 
     public final DoubleProperty centerYProperty() {
-        return view.centerYProperty();
+        return ball.centerYProperty();
     }
 
     public Shape getView() {
-        return view;
+        return ball;
     }
 }
